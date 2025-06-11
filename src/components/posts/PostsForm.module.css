@@ -1,0 +1,40 @@
+.card {
+  padding: 1rem;
+  border-radius: 8px;
+  max-width: 600px;
+  margin: 2rem auto;
+  font-family: "Arial";
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.formField {
+  padding: 12px;
+  border-color: #f0f0f0;
+}
+
+.buttonRow {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.deleteButton {
+  background: #ffdddd;
+  border: 1px solid red;
+  color: red;
+}
+
+.error {
+  color: red;
+  font-size: 0.8rem;
+}
