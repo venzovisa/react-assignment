@@ -11,7 +11,7 @@ export const fetchUsers = createAsyncThunk(
     if (!response.ok) {
       return thunkAPI.rejectWithValue(`Failed to fetch users`);
     }
-    return await response.json();
+    return response.json();
   }
 );
 

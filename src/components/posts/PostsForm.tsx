@@ -96,7 +96,6 @@ const PostsForm = ({ initialData, handleDelete }: { initialData: Post, handleDel
                     )}
                 </Formik>}
             </div>
-
         </>
     );
 };

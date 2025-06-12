@@ -13,8 +13,7 @@ export const fetchPostsByUserId = createAsyncThunk(
         `Failed to fetch posts for the user ${userId}`
       );
     }
-    const data = await response.json();
-    return data;
+    return response.json();
   }
 );
 

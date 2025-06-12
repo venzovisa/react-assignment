@@ -1,22 +1,22 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
-import { BrowserRouter, Link, Route, Routes } from "react-router"
-import { Provider } from 'react-redux'
-import { store } from './store/store.ts'
-import Posts from './components/posts/Posts.tsx'
-import Todos from './components/todos/Todos.tsx'
-import Result from 'antd/es/result/index'
-import Navigation from './Navigation.tsx'
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter, Link, Route, Routes } from "react-router";
+import { Provider } from 'react-redux';
+import { setupStore } from './store/store.ts';
+import Posts from './components/posts/Posts.tsx';
+import Todos from './components/todos/Todos.tsx';
+import Result from 'antd/es/result/index';
+import Navigation from './Navigation.tsx';
+import Home from './components/home/Home.tsx';
+import './index.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Provider store={store}>
+    <Provider store={setupStore()}>
       <BrowserRouter>
         <Navigation />
         <Routes>
-          <Route path="/" element={<App />} />
+          <Route path="/" element={<Home />} />
           <Route path="/posts/:userId" element={<Posts />} />
           <Route path="/tasks" element={<Todos />} />
           <Route path="*" element={

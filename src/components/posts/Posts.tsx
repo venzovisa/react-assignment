@@ -15,7 +15,6 @@ const Posts = () => {
     const user = useSelector(selectUserById(Number(userId)));
     const posts = useSelector(selectPosts);
 
-
     const handleDelete = (id: number) => {
         dispatch(deletePost(id));
     }

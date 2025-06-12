@@ -11,8 +11,7 @@ export const fetchTodos = createAsyncThunk(
     if (!response.ok) {
       return thunkAPI.rejectWithValue(`Failed to fetch todos`);
     }
-    const data = await response.json();
-    return data;
+    return response.json();
   }
 );
 

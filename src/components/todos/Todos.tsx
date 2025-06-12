@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState, type ChangeEvent } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { fetchTodos, selectTodos, toggleTodo } from "../../store/reducers/todosSlice";
-import { Table } from 'antd';
 import type { RadioChangeEvent } from "antd/es/radio";
-import type { TableProps } from "antd/es/table/InternalTable";
 import Radio from "antd/es/radio";
 import Input from "antd/es/input";
 import Space from "antd/es/space";
 import Checkbox from "antd/es/checkbox";
+import styles from './Todos.module.css';
+import Table, { type ColumnType } from "antd/es/table";
 
 type DataType = {
     key: React.Key;
@@ -24,7 +24,7 @@ const Todos = () => {
     const [filter, setFilter] = useState(1);
     const [input, setInput] = useState('');
 
-    const columns: TableProps<DataType> = [
+    const columns: ColumnType<DataType>[] = [
         {
             title: 'UserID',
             dataIndex: 'userId',
@@ -135,7 +135,7 @@ const Todos = () => {
 
     return (<>
         <Space style={{ marginBottom: '2rem' }}>
-            <Input value={input} placeholder="Filter by" className="todos-search-field" onChange={handleInputChange} onKeyUp={(e) => {
+            <Input value={input} placeholder="Filter by" className={styles.todosSearchField} onChange={handleInputChange} onKeyUp={(e) => {
                 if (e.key === 'Enter') handleSearch();
             }} />
             <Radio.Group

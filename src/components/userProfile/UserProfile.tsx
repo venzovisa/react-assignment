@@ -47,8 +47,10 @@ const UserProfile = ({ user }: { user: User }) => {
         <div className={styles.card}>
             {!isEditing ? (
                 <>
-                    <h2 className={styles.name}>{user.name}</h2>
-                    <p className={styles.username}>@{user.username}</p>
+                    <div>
+                        <h2 className={styles.name}>{user.name}</h2>
+                        <p className={styles.username}>@{user.username}</p>
+                    </div>
 
                     <div className={styles.section}>
                         <h3>Contact Info</h3>
