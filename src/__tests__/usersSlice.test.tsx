@@ -78,8 +78,37 @@ describe("usersSlice", () => {
     expect(state.error).toBeNull();
   });
 
-  test.skip("should fetch users data", async () => {
+  test("should fetch users data", async () => {
     // Arrange
+    const expectedState = {
+      data: [
+        {
+          "id": 1,
+          "name": "Leanne Graham",
+          "username": "Bret",
+          "email": "Sincere@april.biz",
+          "address": {
+            "street": "Kulas Light",
+            "suite": "Apt. 556",
+            "city": "Gwenborough",
+            "zipcode": "92998-3874",
+            "geo": {
+              "lat": "-37.3159",
+              "lng": "81.1496"
+            }
+          },
+          "phone": "1-770-736-8031 x56442",
+          "website": "hildegard.org",
+          "company": {
+            "name": "Romaguera-Crona",
+            "catchPhrase": "Multi-layered client-server neural-net",
+            "bs": "harness real-time e-markets"
+          }
+        },
+      ],
+      status: 'succeeded',
+      error: null
+    }
     store = configureStore({
       preloadedState: {
         users: {
@@ -94,12 +123,10 @@ describe("usersSlice", () => {
     });
 
     // Act
-    usersReducer(undefined, fetchUsers());
+    await store.dispatch(fetchUsers());
 
     // Assert
     const state = (store.getState() as { users: UsersState }).users;
-    expect(state.data).toEqual([]);
-    expect(state.status).toEqual('idle');
-    expect(state.error).toBeNull();
+    expect(state).toEqual(expectedState);
   });
 });
