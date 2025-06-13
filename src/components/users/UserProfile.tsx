@@ -1,34 +1,40 @@
-import { useState } from 'react';
+import { useState, type PropsWithChildren } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import styles from './UserProfile.module.css';
 import type { User } from '../../models';
 import { updateUser } from '../../store/reducers/usersSlice';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch } from '../../hooks/hooks';
+import Button from 'antd/es/button';
+import { Col, Row } from 'antd/es/grid';
+import Divider from 'antd/es/divider';
+import { systemMessages } from '../../utils/utils';
+import UserProfileView from './UserProfileView';
+
 
 const validationSchema = Yup.object({
-    username: Yup.string().required('Username is required'),
-    email: Yup.string().email('Invalid email').required('Email is required'),
+    username: Yup.string().required('Username is required').max(100, systemMessages.MAX_LENGTH),
+    email: Yup.string().email('Invalid email').required('Email is required').max(100, systemMessages.MAX_LENGTH),
     address: Yup.object({
-        street: Yup.string().required('Street is required'),
-        suite: Yup.string().required('Suite is required'),
-        city: Yup.string().required('City is required'),
-        zipcode: Yup.string(),
+        street: Yup.string().required('Street is required').max(100, systemMessages.MAX_LENGTH),
+        suite: Yup.string().required('Suite is required').max(100, systemMessages.MAX_LENGTH),
+        city: Yup.string().required('City is required').max(100, systemMessages.MAX_LENGTH),
+        zipcode: Yup.string().max(100),
         geo: Yup.object({
-            lat: Yup.string(),
-            lng: Yup.string(),
+            lat: Yup.string().max(100),
+            lng: Yup.string().max(100),
         }),
     }),
-    phone: Yup.string(),
-    website: Yup.string(),
+    phone: Yup.string().max(30, systemMessages.MAX_LENGTH),
+    website: Yup.string().max(100),
     company: Yup.object({
-        name: Yup.string(),
-        catchPhrase: Yup.string(),
-        bs: Yup.string(),
+        name: Yup.string().max(100),
+        catchPhrase: Yup.string().max(100),
+        bs: Yup.string().max(100),
     }),
 });
 
-const UserProfile = ({ user }: { user: User }) => {
+const UserProfile = ({ user, children }: PropsWithChildren<{ user: User }>) => {
     const dispatch = useAppDispatch();
     const [isEditing, setIsEditing] = useState(false);
     const [userDataSnapshot, setUserDataSnapshot] = useState(user);
@@ -47,35 +53,16 @@ const UserProfile = ({ user }: { user: User }) => {
         <div className={styles.card}>
             {!isEditing ? (
                 <>
-                    <div>
-                        <h2 className={styles.name}>{user.name}</h2>
-                        <p className={styles.username}>@{user.username}</p>
-                    </div>
-
-                    <div className={styles.section}>
-                        <h3>Contact Info</h3>
-                        <p>Email: <a href={`mailto:${user.email}`}>{user.email}</a></p>
-                        <p>Phone: {user.phone}</p>
-                        <p>Website: <a href={`https://${user.website}`} target="_blank" rel="noreferrer">{user.website}</a></p>
-                    </div>
-
-                    <div className={styles.section}>
-                        <h3>Address</h3>
-                        <p>{user.address.suite}, {user.address.street}</p>
-                        <p>{user.address.city}, {user.address.zipcode}</p>
-                        <p>Geo: {user.address.geo.lat}, {user.address.geo.lng}</p>
-                    </div>
-
-                    <div className={styles.section}>
-                        <h3>Company</h3>
-                        <p><strong>{user.company.name}</strong></p>
-                        <p>{user.company.catchPhrase}</p>
-                        <p>{user.company.bs}</p>
-                    </div>
-
-                    <button onClick={handleEdit} className={styles.button}>
-                        Edit Profile
-                    </button>
+                    <UserProfileView user={user}>
+                        <Row justify="end" align="middle" gutter={{ xs: 4 }} className={styles.section}>
+                            <Col span={5}>
+                                <Button type='primary' onClick={handleEdit}>
+                                    Edit Profile
+                                </Button>
+                            </Col>
+                            {children}
+                        </Row>
+                    </UserProfileView>
                 </>
             ) : (
                 <Formik
@@ -100,11 +87,13 @@ const UserProfile = ({ user }: { user: User }) => {
 
                             <label htmlFor='phone'>Phone</label>
                             <Field name="phone" />
+                            <ErrorMessage name="phone" component="div" className={styles.error} />
 
                             <label htmlFor='website'>Website</label>
                             <Field name="website" />
+                            <ErrorMessage name="website" component="div" className={styles.error} />
 
-                            <h3>Address</h3>
+                            <Divider orientation="left">Address</Divider>
                             <label htmlFor='address.street'>Street</label>
                             <Field name="address.street" />
                             <ErrorMessage name="address.street" component="div" className={styles.error} />
@@ -125,7 +114,7 @@ const UserProfile = ({ user }: { user: User }) => {
                             <label htmlFor='address.geo.lng'>Geo Longitude</label>
                             <Field name="address.geo.lng" />
 
-                            <h3>Company</h3>
+                            <Divider orientation="left">Company</Divider>
                             <label htmlFor='company.name'>Company Name</label>
                             <Field name="company.name" />
 

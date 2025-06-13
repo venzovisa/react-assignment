@@ -1,0 +1,7 @@
+.container {
+  margin-bottom: 2rem;
+  margin-inline: auto;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(5, 5, 5, 0.06);
+}

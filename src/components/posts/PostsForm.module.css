@@ -38,3 +38,8 @@
   color: red;
   font-size: 0.8rem;
 }
+
+.postTitle {
+  max-width: 800px;
+  margin: 2rem auto;
+}

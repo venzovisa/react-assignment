@@ -1,13 +1,18 @@
 import { useCallback, useEffect, useState, type ChangeEvent } from "react";
-import { useAppDispatch, useAppSelector } from "../../hooks";
-import { fetchTodos, selectTodos, toggleTodo } from "../../store/reducers/todosSlice";
 import type { RadioChangeEvent } from "antd/es/radio";
+import Table, { type ColumnType } from "antd/es/table";
 import Radio from "antd/es/radio";
 import Input from "antd/es/input";
 import Space from "antd/es/space";
 import Checkbox from "antd/es/checkbox";
+import Button from "antd/es/button";
+import Result from "antd/es/result";
+import { fetchTodos, selectTodos, toggleTodo } from "../../store/reducers/todosSlice";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { useLoadingStatus } from "../../hooks/useLoadingStatus";
+import { systemMessages } from "../../utils/utils";
+import ListLoader from "../loaders/ListLoader";
 import styles from './Todos.module.css';
-import Table, { type ColumnType } from "antd/es/table";
 
 type DataType = {
     key: React.Key;
@@ -23,6 +28,7 @@ const Todos = () => {
     const [dataSource, setDataSource] = useState<DataType[]>([]);
     const [filter, setFilter] = useState(1);
     const [input, setInput] = useState('');
+    const { isLoading, isError } = useLoadingStatus("todos");
 
     const columns: ColumnType<DataType>[] = [
         {
@@ -107,6 +113,7 @@ const Todos = () => {
     }
 
     const handleSearch = () => {
+        if (!input) return;
         switch (filter) {
             case 1: {
                 setDataSource(() => dataSource.filter(item => String(item.userId) === input))
@@ -133,6 +140,24 @@ const Todos = () => {
         setDataSource(data);
     }, [todos, mapItemsToColData])
 
+    if (isLoading) {
+        return <ListLoader length={3} />
+    }
+
+    if (isError) {
+        return <>
+            <Result
+                status="warning"
+                title={systemMessages.GENERAL_ERROR}
+                extra={
+                    <Button type="primary" key="console" onClick={() => dispatch(fetchTodos())}>
+                        Retry
+                    </Button>
+                }
+            />
+        </>
+    }
+
     return (<>
         <Space style={{ marginBottom: '2rem' }}>
             <Input value={input} placeholder="Filter by" className={styles.todosSearchField} onChange={handleInputChange} onKeyUp={(e) => {
@@ -146,8 +171,8 @@ const Todos = () => {
                     { value: 2, label: 'title' },
                 ]}
             />
-            <button type="button" className="button" onClick={handleSearch}>Search</button>
-            <button type="button" className="button" onClick={handleReset}>Reset</button>
+            <Button onClick={handleSearch}>Search</Button>
+            <Button onClick={handleReset}>Reset</Button>
         </Space>
         <Table columns={columns} dataSource={dataSource} />
     </>)

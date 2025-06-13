@@ -1,24 +1,25 @@
 import { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import type { Post } from '../../models';
-import styles from './PostsForm.module.css';
 import Card from 'antd/es/card/Card';
 import Button from 'antd/es/button';
 import Modal from 'antd/es/modal';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch } from '../../hooks/hooks';
 import { updatePost } from '../../store/reducers/postsSlice';
+import { systemMessages } from '../../utils/utils';
+import type { Post } from '../../models';
+import styles from './PostsForm.module.css';
+
+const validationSchema = Yup.object({
+    title: Yup.string().required('Required').max(255, systemMessages.MAX_LENGTH),
+    body: Yup.string().required('Required').max(255, systemMessages.MAX_LENGTH),
+});
 
 const PostsForm = ({ initialData, handleDelete }: { initialData: Post, handleDelete: (id: number) => void }) => {
     const [originalData, setOriginalData] = useState(initialData);
     const [editMode, setEditMode] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const dispatch = useAppDispatch();
-
-    const validationSchema = Yup.object({
-        title: Yup.string().required('Required'),
-        body: Yup.string().required('Required'),
-    });
 
     const handleEdit = () => {
         setOriginalData(initialData);
@@ -86,7 +87,7 @@ const PostsForm = ({ initialData, handleDelete }: { initialData: Post, handleDel
                             <div className={styles.buttonRow}>
                                 {editMode ? (
                                     <>
-                                        <Button htmlType='submit'>Save</Button>
+                                        <Button htmlType='submit' type='primary'>Save</Button>
                                         <Button onClick={() => resetForm({ values: originalData })}>Revert</Button>
                                         <Button onClick={() => setEditMode(false)}>Cancel</Button>
                                     </>
