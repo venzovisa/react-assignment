@@ -47,6 +47,14 @@ export const handlers = [
     ]);
   }),
 
+  http.delete("https://jsonplaceholder.typicode.com/posts/:id", () => {
+    return HttpResponse.json({ message: "OK" }, { status: 200 });
+  }),
+
+  http.put("https://jsonplaceholder.typicode.com/posts/:id", () => {
+    return HttpResponse.json({ message: "OK" }, { status: 200 });
+  }),
+
   http.get("https://jsonplaceholder.typicode.com/todos", () => {
     return HttpResponse.json([
       {

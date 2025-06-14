@@ -11,7 +11,6 @@ import Divider from 'antd/es/divider';
 import { systemMessages } from '../../utils/utils';
 import UserProfileView from './UserProfileView';
 
-
 const validationSchema = Yup.object({
     username: Yup.string().required('Username is required').max(100, systemMessages.MAX_LENGTH),
     email: Yup.string().email('Invalid email').required('Email is required').max(100, systemMessages.MAX_LENGTH),

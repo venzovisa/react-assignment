@@ -1,21 +1,11 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 import type { Post, PostsState } from "../../models";
-import api from "../../api/api";
-
-export const fetchPostsByUserId = createAsyncThunk(
-  "posts/fetchPostsByUserId",
-  async (userId: string | number | undefined, thunkAPI) => {
-    const response = await api.getPostsByUserId(userId);
-    if (!response.ok) {
-      return thunkAPI.rejectWithValue(
-        `Failed to fetch posts for the user ${userId}`
-      );
-    }
-    return response.json();
-  }
-);
+import {
+  deletePost,
+  fetchPostsByUserId,
+  updatePost,
+} from "../actions/postsActions";
 
 const initialState: PostsState = {
   data: [],
@@ -26,23 +16,7 @@ const initialState: PostsState = {
 export const postsSlice = createSlice({
   name: "posts",
   initialState,
-  reducers: {
-    updatePost: (state, action: PayloadAction<Post>) => {
-      const newData = state.data.map((post) => {
-        if (
-          post.id === action.payload.id &&
-          post.userId === action.payload.userId
-        ) {
-          return { ...post, ...action.payload };
-        }
-        return post;
-      });
-      state.data = newData;
-    },
-    deletePost: (state, action: PayloadAction<number>) => {
-      state.data = state.data.filter((p) => p.id !== action.payload);
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchPostsByUserId.pending, (state) => {
@@ -53,14 +27,45 @@ export const postsSlice = createSlice({
         state.status = "succeeded";
         state.data = action.payload;
       })
-      .addCase(fetchPostsByUserId.rejected, (state) => {
+      .addCase(fetchPostsByUserId.rejected, (state, action) => {
         state.status = "failed";
-        state.error = "Something went wrong";
+        state.error = action.type;
+      })
+      .addCase(deletePost.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(deletePost.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.data = state.data.filter((p) => p.id !== action.payload);
+      })
+      .addCase(deletePost.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.type;
+      })
+      .addCase(updatePost.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(updatePost.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        const newData = state.data.map((post) => {
+          if (
+            post.id === action.payload.id &&
+            post.userId === action.payload.userId
+          ) {
+            return { ...post, ...action.payload };
+          }
+          return post;
+        });
+        state.data = newData;
+      })
+      .addCase(updatePost.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.type;
       });
   },
 });
-
-export const { updatePost, deletePost } = postsSlice.actions;
 
 export const selectPostsByUserId = (id: number) => (state: RootState) =>
   state.posts.data.filter((post: Post) => post.userId === id);

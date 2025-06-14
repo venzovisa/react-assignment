@@ -1,13 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import "@testing-library/jest-dom";
 import { faker } from '@faker-js/faker';
-import postsReducer, { updatePost, deletePost, fetchPostsByUserId } from "../store/reducers/postsSlice";
+import postsReducer from "../store/reducers/postsSlice";
 import type { PostsState } from "../models";
+import { deletePost, fetchPostsByUserId, updatePost } from "../store/actions/postsActions";
 
 describe("postsSlice", () => {
     let store: ReturnType<typeof configureStore>;
 
-    test("should update post data", () => {
+    test("should update post data", async () => {
         // Arrange
         const initialPost = {
             "userId": 1,
@@ -35,16 +36,16 @@ describe("postsSlice", () => {
         });
 
         // Act
-        store.dispatch(updatePost(updatedPost));
+        await store.dispatch(updatePost(updatedPost));
 
         // Assert
         const state = (store.getState() as { posts: PostsState }).posts;
         expect(state.data).toEqual([updatedPost]);
-        expect(state.status).toEqual('idle');
+        expect(state.status).toEqual('succeeded');
         expect(state.error).toBeNull();
     });
 
-    test("should delete a post", () => {
+    test("should delete a post", async () => {
         // Arrange
         const initialPost = {
             "userId": 1,
@@ -66,12 +67,12 @@ describe("postsSlice", () => {
         });
 
         // Act
-        store.dispatch(deletePost(1));
+        await store.dispatch(deletePost(1));
 
         // Assert
         const state = (store.getState() as { posts: PostsState }).posts;
         expect(state.data).toEqual([]);
-        expect(state.status).toEqual('idle');
+        expect(state.status).toEqual('succeeded');
         expect(state.error).toBeNull();
     });
 

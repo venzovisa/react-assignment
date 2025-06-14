@@ -1,19 +1,7 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
-import type { Todo, TodosState } from "../../models";
-import api from "../../api/api";
-
-export const fetchTodos = createAsyncThunk(
-  "posts/fetch",
-  async (_, thunkAPI) => {
-    const response = await api.getTodos();
-    if (!response.ok) {
-      return thunkAPI.rejectWithValue(`Failed to fetch todos`);
-    }
-    return response.json();
-  }
-);
+import type { TodosState } from "../../models";
+import { fetchTodos, toggleTodoReducer } from "../actions/todosActions";
 
 const initialState: TodosState = {
   data: [],
@@ -25,18 +13,7 @@ export const todosSlice = createSlice({
   name: "todos",
   initialState,
   reducers: {
-    toggleTodo: (
-      state,
-      action: PayloadAction<Pick<Todo, "id" | "completed">>
-    ) => {
-      const newData = state.data.map((todo) => {
-        if (todo.id === action.payload.id) {
-          return { ...todo, completed: action.payload.completed };
-        }
-        return todo;
-      });
-      state.data = newData;
-    },
+    toggleTodo: toggleTodoReducer,
   },
   extraReducers: (builder) => {
     builder

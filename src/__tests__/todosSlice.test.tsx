@@ -1,7 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 import "@testing-library/jest-dom";
 import { faker } from '@faker-js/faker';
-import todosReducer, { fetchTodos, toggleTodo } from "../store/reducers/todosSlice";
+import todosReducer, { toggleTodo } from "../store/reducers/todosSlice";
+import { fetchTodos } from "../store/actions/todosActions";
 import type { TodosState } from "../models";
 
 describe("todosSlice", () => {
