@@ -1,54 +1,38 @@
-# React + TypeScript + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## 1. Requirements
+* Create a basic web application using the following technology stack:
+* Technology - React with Typescript (https://create-reactapp.dev/docs/addingtypescript/)
+* State management - Redux and redux-toolkit
+(https://reduxtoolkit.js.org/introduction/getting-started)
+* UI Library (optional) - e.g. Antd (https://ant.design/components/overview/)
+* Router - react-router (https://reactrouter.com/)
+* Backend - JSONPlaceholder API (https://jsonplaceholder.typicode.com/guide/)
+## 2. Users list
+* GET https://jsonplaceholder.typicode.com/users
+* GET https://jsonplaceholder.typicode.com/users/:userId
+* Use the public JSONPlaceholder API to fetch and display 10 users on the home
+page of the application
+* Display the users as a vertical list of collapsible sections
+* Expanded users should be editable
+* Add input validation - username, email, address.street, address.suite, and
+address.city are mandatory
+* Implement cancel/revert and submit buttons (should only be active when changes
+are made)
+* Add a button ’See posts’ that redirects to a new page
+## 3. User posts
+* GET https://jsonplaceholder.typicode.com/posts?userId=X
+* Display the user details at the top of the page (information should be editable as
+on the home page)
+* Fetch and display a list of posts for the given user id
+* Posts should be editable and deletable through the JSONPlaceholder API - use a
+confirmation popup for the delete functionality
+## 4. Tasks
+* GET https://jsonplaceholder.typicode.com/todos
+* Create a separate /tasks route
+* Fetch and display a list of tasks - use HTML table with pagination of page size 10
+* Allow filtering by task status (completed or not completed), title and owner (user)
+* Implement functionality for changing the status of a task - changes should persist
+through searches
+## 5. Notes
+* Cover empty, error and loading states
+* Aim for a simple but good-looking UI
+* Add unit tests
