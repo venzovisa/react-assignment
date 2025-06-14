@@ -5,10 +5,10 @@ import Card from 'antd/es/card/Card';
 import Button from 'antd/es/button';
 import Modal from 'antd/es/modal';
 import { useAppDispatch } from '../../hooks/hooks';
-import { updatePost } from '../../store/reducers/postsSlice';
 import { systemMessages } from '../../utils/utils';
 import type { Post } from '../../models';
 import styles from './PostsForm.module.css';
+import { updatePost } from '../../store/actions/postsActions';
 
 const validationSchema = Yup.object({
     title: Yup.string().required('Required').max(255, systemMessages.MAX_LENGTH),

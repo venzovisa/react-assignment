@@ -1,19 +1,7 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 import type { User, UsersState } from "../../models";
-import api from "../../api/api";
-
-export const fetchUsers = createAsyncThunk(
-  "users/fetch",
-  async (_, thunkAPI) => {
-    const response = await api.getUsers();
-    if (!response.ok) {
-      return thunkAPI.rejectWithValue(`Failed to fetch users`);
-    }
-    return response.json();
-  }
-);
+import { fetchUsers, updateUserReducer } from "../actions/usersActions";
 
 const initialState: UsersState = {
   data: [],
@@ -25,15 +13,7 @@ export const usersSlice = createSlice({
   name: "users",
   initialState,
   reducers: {
-    updateUser: (state, action: PayloadAction<User>) => {
-      const newData = state.data.map((user) => {
-        if (user.id === action.payload.id) {
-          return { ...user, ...action.payload };
-        }
-        return user;
-      });
-      state.data = newData;
-    },
+    updateUser: updateUserReducer,
   },
   extraReducers: (builder) => {
     builder

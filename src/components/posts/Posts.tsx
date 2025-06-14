@@ -7,7 +7,7 @@ import Result from "antd/es/result";
 import Button from "antd/es/button";
 import Alert from "antd/es/alert";
 import { selectUserById } from "../../store/reducers/usersSlice";
-import { deletePost, fetchPostsByUserId, selectPosts } from "../../store/reducers/postsSlice";
+import { selectPosts } from "../../store/reducers/postsSlice";
 import { useAppDispatch } from "../../hooks/hooks";
 import { useLoadingStatus } from "../../hooks/useLoadingStatus";
 import { useDelayedLoader } from "../../hooks/useDelayedLoader";
@@ -16,6 +16,7 @@ import PostsForm from "./PostsForm";
 import { systemMessages } from "../../utils/utils";
 import ListLoader from "../loaders/ListLoader";
 import styles from './PostsForm.module.css';
+import { deletePost, fetchPostsByUserId } from "../../store/actions/postsActions";
 
 const Posts = () => {
     const { userId } = useParams();
